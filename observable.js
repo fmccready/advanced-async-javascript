@@ -7,6 +7,41 @@ class Observable {
   subscribe(observer){
     return this._subscribe(observer);
   }
+  
+  static concat(...observables){
+    return new Observable(function subscribe(observer){
+      
+      let myObservables = myObservables.slice();
+      let currentSub = null;
+      let processObservble = () => {
+        
+        if (myObservables.length === 0){
+          observer.complete();
+        } else {
+
+
+          let observable = myObservables.shift();
+          currentSub = observable.subscribe({
+            next(v){
+              observer.next(v)
+            },
+            error(e){
+              observer.error(e)
+              currentSub.unsubscribe();
+            },
+            complete(){
+              processObservable(); 
+            }
+          });
+        }
+        processObservable();
+
+        return {
+          unsubscribe(){currentSub.unsubscribe();}
+        };
+      }
+    });
+  }
 
   static timeout(time){
     return new Observable(function subscribe(observer){
