@@ -4,11 +4,27 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "clean": "rm -rf dist/*",
+    "copy-html": "cp src/*.html dist/",
+    "copy-js": "cp ./node_modules/handlebars/dist/handlebars.runtime.js dist/js/handlebars.runtime.js",
+    "make-directories": "mkdir -p dist/templates dist/js",
+    "build-webpack": "webpack --config webpack.config.js",
+    "build-handlebars": "handlebars src/templates/> dist/templates/index.js",
+    "start": "npm run make-directories; npm run copy-html; npm run copy-js; npm run build-handlebars; npm run build-webpack & node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "fs": "0.0.1-security",
+    "handlebars": "^4.0.11",
+    "handlebars-loader": "^1.6.0",
+    "nodemon": "^1.12.1",
+    "standard": "^10.0.3",
+    "watch": "^1.0.2",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "rxjs": "^5.5.2"
   }
 }
