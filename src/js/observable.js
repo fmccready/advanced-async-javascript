@@ -107,39 +107,4 @@ class Observable {
     });
   }
 }
-
-const obs = Observable.timeout(500);
-/*
-obs.subscribe({
-  next(v){
-    console.log(v);
-  },
-  complete(){
-    console.log('done');
-  }
-});
-*/
-
-var button = document.getElementById('button');
-
-const clicks = Observable.fromEvent(button, 'click');
-
-clicks.map(ev => ev.offsetX).
-  filter(offsetX => offsetX > 20).
-  subscribe({
-    next(ev){
-      console.log(ev);
-    },
-    complete(){
-      console.log('done!');
-    }
-  })
-
-clicks.subscribe({
-  next(e){
-    console.log('next from clicks');
-  },
-  complete(){
-    console.log('clicker complete');
-  }
-});
+module.exports = Observable;
