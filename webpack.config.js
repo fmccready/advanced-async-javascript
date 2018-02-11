@@ -1,6 +1,8 @@
 const path = require('path')
 
-module.exports = {
+module.exports = [
+  'source-map'
+].map(devtool => ({
   entry: {
     index: './src/js/index.js',
     challenge2: './src/js/challenge2.js'
@@ -20,7 +22,9 @@ module.exports = {
       {
         test: /\.less$/,
         use: [
-          {loader: 'less-loader'}
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
+          {loader: 'less-loader'},
         ]
       },
       {
@@ -35,8 +39,9 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist/js')
   },
+  devtool,
   watch: true,
   watchOptions: {
     aggregateTimeout: 2000
   }
-}
+}));
