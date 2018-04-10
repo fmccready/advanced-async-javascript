@@ -13,13 +13,11 @@ class Observable {
       
       let myObservables = myObservables.slice();
       let currentSub = null;
-      let processObservble = () => {
+      let processObservable = () => {
         
         if (myObservables.length === 0){
           observer.complete();
         } else {
-
-
           let observable = myObservables.shift();
           currentSub = observable.subscribe({
             next(v){
