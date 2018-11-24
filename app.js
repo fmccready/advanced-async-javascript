@@ -3,13 +3,16 @@ const express = require('express');
 const path = require('path');
 const interfaces = require('os').networkInterfaces();
 const Handlebars = require('handlebars');
-var ipAddresses = Object.keys(interfaces).map((nic)=>{
-  return interfaces[nic].map((connection)=>{
-    return connection.address;
-  });
-});
 
-ipAddresses = flatten(ipAddresses);
+const getIpAddresses = function(){
+    return Object.keys(interfaces).map((nic)=>{
+    return interfaces[nic].map((connection)=>{
+      return connection.address;
+    });
+  });
+}
+
+var ipAddresses = flatten(getIpAddresses());
 
 function flatten(outer){
   var tempArray = [];
@@ -35,4 +38,3 @@ app.listen(8080, function(){
     console.log(`app listening on ${address}:8080`);
   });
 });
-
