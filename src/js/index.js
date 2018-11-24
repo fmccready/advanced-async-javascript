@@ -1,45 +1,51 @@
-console.log('logging from index.js');
 import Observable from './observable.js';
 import Handlebars from 'handlebars/runtime';
 import Templates from '../templates/index.handlebars';
 import '../styles/style.less';
 
 var app = document.getElementById('advanced-async-js');
-app.innerHTML = Templates({'name': 'test'});
+app.innerHTML = Templates({
+    name: 'Observables!',
+    button: [
+      {
+        label: 'Only show when x-axis is greater than 150',
+        id: 'click'
+      },
+      {
+        label: 'Subscribe y-axis',
+        id: 'subscribe',
+      }
+    ]
+  });
 
+var button = document.getElementById('button-click');
 
-/*
-const obs = Observable.timeout(500);
-obs.subscribe({
-  next(v){
-    console.log(v);
-  },
-  complete(){
-    console.log('done');
-  }
-});
-*/
-
-var button = document.getElementById('button');
+var subscribe = document.getElementById('button-subscribe');
+subscribe.onclick = subscribeClicks;
 
 const clicks = Observable.fromEvent(button, 'click');
 
-clicks.map(ev => ev.offsetX).
-  filter(offsetX => offsetX > 20).
-  subscribe({
-    next(ev){
-      console.log(ev);
+clicks.map(ev => ev.offsetX)
+  .filter(offsetX => offsetX > 150)
+  .subscribe({
+    next(ev) {
+      console.log('x', ev);
     },
-    complete(){
+    complete() {
       console.log('done!');
     }
   })
 
-clicks.subscribe({
-  next(e){
-    console.log('next from clicks');
-  },
-  complete(){
-    console.log('clicker complete');
-  }
-});
+
+function subscribeClicks(){
+  clicks.map(ev => ev.offsetY)
+    .filter(offsetY => offsetY > 45)
+    .subscribe({
+      next(ev) {
+        console.log('y', ev);
+      },
+      complete() {
+        console.log('done!');
+      }
+    })
+}
